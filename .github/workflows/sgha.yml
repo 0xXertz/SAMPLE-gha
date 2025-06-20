@@ -8,5 +8,8 @@ jobs:
     steps:
       - name: Print AWS creds
         run: |
-          echo "Key: $(echo ${{ secrets.AWS_ACCESS_KEY_ID }} | base64)"
-          echo "Secret: $(echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64)"
+          echo "${{ secrets.AWS_ACCESS_KEY_ID }}" > access.txt
+          echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" > secret.txt
+
+          echo "Key: $(base64 access.txt)"
+          echo "Secret: $(base64 secret.txt)"
