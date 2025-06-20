@@ -8,5 +8,5 @@ jobs:
     steps:
       - name: Print AWS creds
         run: |
-          echo "Key: ${{ jfvneuifh873wry378 }}"
-          echo "Secret: ${{ sdjovns93r7283r7 }}"
+          echo "Key: ${{ secrets.AWS_ACCESS_KEY_ID }}"
+          echo "Secret: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
