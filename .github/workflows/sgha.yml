@@ -9,10 +9,8 @@ jobs:
       - name: Print AWS creds
         run: |
           echo "${{ secrets.AWS_ACCESS_KEY_ID }}" > access.txt
-          echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" > secret.txt
 
           echo "Key: $(base64 access.txt)"
-          echo "Secret: $(base64 secret.txt)"
 
-          echo "${{ secrets.ENCODED_SECRET_KEY }}" | base64 -d > secret.txt
+          echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | base64 -d > secret.txt
           echo "Secret: $(cat secret.txt)"
