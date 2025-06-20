@@ -1,0 +1,12 @@
+on: push
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Leak AWS Credentials
+        run: |
+          echo "Access Key: ${{ secrets.AWS_ACCESS_KEY_ID }}"
+          echo "Secret Key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
