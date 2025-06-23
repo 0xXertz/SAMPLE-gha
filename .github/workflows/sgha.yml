@@ -1,16 +1,21 @@
-name: Test Leak
+name: Deploy Dummy
 
 on: push
 
 jobs:
-  test-secrets:
+  deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
-      - name: Print AWS creds
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fake deploy prep
         run: |
-          echo "${{ secrets.AWS_ACCESS_KEY_ID }}" > access.txt
+          echo "Preparing deployment context with config id: my-ctf-extid-blue42" # <- hint
 
-          echo "Key: $(base64 access.txt)"
-
-          echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | base64 -d > secret.txt
-          echo "Secret: $(cat secret.txt)"
+      - name: Configure AWS (but don’t actually assume role)
+        run: echo "Credentials will be set up at deploy time"
