@@ -1,4 +1,4 @@
-name: Exploit CTF Role
+name: Try to Get the Flag
 
 on: workflow_dispatch
 
@@ -7,15 +7,15 @@ permissions:
   contents: read
 
 jobs:
-  exploit:
+  assume-role:
     runs-on: ubuntu-latest
     steps:
-      - name: Assume Role
+      - name: Assume Role with OIDC
         uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::019847485156:role/ctfassumerole
           role-external-id: my-ctf-extid-blue42
           aws-region: us-east-2
 
-      - name: Get Flag
+      - name: Get Flag from S3
         run: aws s3 cp s3://flagbucket-samplectf/flag.txt -
