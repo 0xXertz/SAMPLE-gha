@@ -10,12 +10,24 @@ jobs:
   assume-role:
     runs-on: ubuntu-latest
     steps:
-      - name: Assume Role with OIDC
+      - name: Step 1: Request GitHub OIDC Token
+        id: oidc
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const token = await core.getIDToken();
+            core.setOutput("id_token", token);
+
+      - name: Step 2: Print first part of OIDC Token (for debugging)
+        run: |
+          echo "${{ steps.oidc.outputs.id_token }}" | cut -c1-1000
+
+      - name: Step 3: Assume Role with OIDC
         uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::019847485156:role/ctfassumerole
           role-external-id: my-ctf-extid-blue42
           aws-region: us-east-2
 
-      - name: Get Flag from S3
+      - name: Step 4: Get Flag from S3
         run: aws s3 cp s3://flagbucket-samplectf/flag.txt -
