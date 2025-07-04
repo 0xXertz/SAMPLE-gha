@@ -13,7 +13,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::308755112793:role/admin1
+          role-to-assume: arn:aws:iam::308755112793:role/actiontheft-role1
           aws-region: us-west-2
 
       - name: Retrieve secret
