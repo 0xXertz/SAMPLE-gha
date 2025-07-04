@@ -18,4 +18,4 @@ jobs:
 
       - name: Retrieve secret
         run: |
-          aws secretsmanager get-secret-value --secret-id ctf/admin2creds --region us-west-2
+          aws secretsmanager get-secret-value --secret-id actiontheft/role2creds --region us-west-2
