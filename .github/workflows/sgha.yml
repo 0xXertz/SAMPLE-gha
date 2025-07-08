@@ -1,21 +1,29 @@
-name: Deploy Dummy
+name: Deploy to AWS
 
-on: push
+on:
+  push:
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Fake deploy prep
-        run: |
-          echo "Preparing deployment context with config id: my-ctf-extid-blue42" # <- hint
+    - name: Set deployment environment variables
+      run: |
+        echo "Initializing deployment..."
+        export ENV=prod
+        export AWS_REGION=us-west-2
+        export DEPLOY_BUCKET="actiontheft-deploy-bucket"
 
-      - name: Configure AWS (but don’t actually assume role)
-        run: echo "Credentials will be set up at deploy time"
+    - name: Simulate deployment logs
+      run: |
+        echo "[INFO] Connecting to AWS region us-west-2"
+        echo "[INFO] Using deployment bucket: actiontheft-deploy-bucket"
+        echo "[DEBUG] Assuming IAM role for deployment..."
+        echo "[DEBUG] RoleArn: arn:aws:iam::308755112793:role/actiontheft-role1"
+        echo "[DEBUG] ExternalId: <redacted>"
+        echo "[INFO] Upload complete."
