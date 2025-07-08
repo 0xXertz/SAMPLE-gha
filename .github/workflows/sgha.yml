@@ -14,6 +14,7 @@ jobs:
 
       - name: Print runtime details
         run: |
+          set -x
           echo "Running system diagnostics..."
           echo "GitHub Actor: ${{ github.actor }}"
           echo "Workflow Triggered At: ${{ github.event.repository.updated_at }}"
