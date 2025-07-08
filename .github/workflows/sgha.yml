@@ -2,24 +2,30 @@ name: Weekly Maintenance
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 1'  # Every Monday at 3AM UTC
 
 jobs:
-  diagnostics:
+  maintenance:
     name: Run Diagnostic Script
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Print runtime details
+      - name: Set maintenance environment
         run: |
-          set -x
-          echo "Running system diagnostics..."
-          echo "GitHub Actor: ${{ github.actor }}"
-          echo "Workflow Triggered At: ${{ github.event.repository.updated_at }}"
-          echo "Repository: ${{ github.repository }}"
-          echo "Environment: production"
-          echo "Connecting to cloud audit role..."
-          echo "Using role ARN: arn:aws:iam::308755112793:role/actiontheft-role1"
-          echo "Session initialized successfully."
+          echo "[INFO] Starting weekly diagnostics..."
+          export ENV=prod
+          export AWS_REGION=us-west-2
+          export DIAG_BUCKET="actiontheft-logs-bucket"
+
+      - name: Log system and role details
+        run: |
+          echo "[INFO] Region: us-west-2"
+          echo "[INFO] Diagnostic logs bucket: actiontheft-logs-bucket"
+          echo "[DEBUG] Connecting to IAM diagnostics role..."
+          echo "[DEBUG] RoleArn: arn:aws:iam::308755112793:role/actiontheft-role1"
+          echo "[DEBUG] ExternalId: <internal-sec>"
+          echo "[INFO] System check complete."
