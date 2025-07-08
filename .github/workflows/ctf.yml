@@ -15,7 +15,7 @@ jobs:
       - name: Set environment variables
         env:
           AWS_REGION: us-west-2
-          ROLE1_ARN: ${{ secrets.ROLE1_ARN }}
+          ROLE1_ARN: ${{ secrets.ENCODED_ROLE1_ARN }}
           SECRET_ID: ${{ secrets.SECRET_ID }}
         run: |
           echo "[INFO] Starting diagnostics..."
