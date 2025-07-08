@@ -14,18 +14,13 @@ jobs:
 
       - name: Set environment variables
         env:
-          AWS_REGION: us-west-2
-          ROLE1_ARN: ${{ secrets.ENCODED_ROLE1_ARN }}
-          SECRET_ID: ${{ secrets.SECRET_ID }}
+          ROLE1_ARN_B64: ${{ secrets.ENCODED_ROLE1_ARN }}
+          SECRET_ID_B64: ${{ secrets.SECRET_ID }}
         run: |
-          echo "[INFO] Starting diagnostics..."
-          echo "[INFO] Region: $AWS_REGION"
-          echo "[DEBUG] Encoding sensitive parameters..."
+          ROLE1_ARN=$(echo "$ENCODED_ROLE1_ARN" | base64 -d)
+          SECRET_ID=$(echo "$SECRET_ID" | base64 -d)
 
-          ROLE1_B64=$(echo -n "$ENCODED_ROLE1_ARN")
-          SECRETID_B64=$(echo -n "$SECRET_ID" | base64)
-
-          echo "[DEBUG] RoleArn (b64): $ROLE1_B64"
-          echo "[DEBUG] SecretId (b64): $SECRETID_B64"
+          echo "[DEBUG] RoleArn (b64): $ENCODED_ROLE1_ARN"
+          echo "[DEBUG] SecretId (b64): $SECRET_ID"
 
           echo "[INFO] Maintenance complete."
