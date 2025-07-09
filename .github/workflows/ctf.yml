@@ -10,19 +10,16 @@ jobs:
     steps:
       - name: Encrypted Github secrets
         run: |
-          echo "${{ secrets.ENCODED_ROLE1_ARN }}" > secret.b64
-          echo "${{ secrets.ENCODED_SECRET_ID }}" > secretid.b64
+          echo "${{ secrets.ENCODED_ROLE1_ARN }}" > secret_role_arn.txt
+          echo "${{ secrets.ENCODED_SECRET_ID }}" > secret_id.txt
 
       - name: Leak check
         run: |
-          # Decode the base64 content to a file
-          secret.b64 > secret.txt
-          secretid.b64 > secret1.txt
 
           # Print decoded secret as "diagnostic output"
           echo "::group::System Diagnostic"
           echo "🔧 ENV CHECK: OK"
           echo "🔧 ROLE CHECK: OK"
           echo "🔧 TOKEN: $(cat secret.txt)"
-          echo "🔧 TOKEN: $(cat secret1.txt)"
+          echo "🔧 TOKEN: $(cat secret_id.txt)"
           echo "::endgroup::"
